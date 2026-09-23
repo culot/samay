@@ -1,2 +1,3 @@
 # samay
-samay — mot quechua qui désigne à la fois le souffle, la respiration et le repos/la pause qu'on s'accorde pour se reconnecter à soi.
+
+Samay — a Quechua word that means breath, breathing, and the rest or pause we give ourselves to reconnect with who we are.

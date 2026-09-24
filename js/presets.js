@@ -11,7 +11,6 @@
 const PRESETS = {
   morning: {
     type: "wimhof",
-    label: "Daily morning routine",
     breaths: 30,
     breath_inhale: 2,
     breath_exhale: 1,
@@ -21,7 +20,6 @@ const PRESETS = {
   },
   box: {
     type: "pattern",
-    label: "Box breathing",
     inhale: 4,
     hold_in: 4,
     exhale: 4,
@@ -30,7 +28,6 @@ const PRESETS = {
   },
   daily: {
     type: "pattern",
-    label: "Daily",
     inhale: 5,
     hold_in: 0,
     exhale: 5,
@@ -41,9 +38,10 @@ const PRESETS = {
 
 // Background music tracks. Drop your own royalty-free .mp3 files into /audio
 // using these exact filenames (see audio/README.md), or edit this list to
-// point at whatever files you add.
+// point at whatever files you add. Display labels live in js/i18n.js
+// (I18N.<lang>.musicTracks) so they translate with the rest of the UI.
 const MUSIC_TRACKS = [
-  { id: "rain", label: "Pluie douce", src: "audio/rain.mp3" },
-  { id: "ocean", label: "Vagues", src: "audio/ocean.mp3" },
-  { id: "drone", label: "Nappe ambiante", src: "audio/drone.mp3" },
+  { id: "rain", src: "audio/rain.mp3" },
+  { id: "ocean", src: "audio/ocean.mp3" },
+  { id: "cosmos", src: "audio/cosmos.mp3" },
 ];

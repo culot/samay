@@ -3,17 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Respire</title>
-<meta name="description" content="Exercices de respiration guidés — box breathing, 4-7-8, cohérence cardiaque et sessions personnalisées.">
+<title>Samay</title>
+<meta name="description" content="Samay — exercices de respiration guidés.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <header class="topbar">
-  <h1 class="logo">respire</h1>
-  <button id="theme-toggle" class="icon-btn" aria-label="Changer de thème" title="Thème clair / sombre">
-    <svg class="icon icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
-    <svg class="icon icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"></path></svg>
+  <div class="brand">
+    <h1 class="logo">Samay</h1>
+    <p class="subtitle" id="app-subtitle" data-i18n="subtitle"></p>
+  </div>
+  <button id="settings-toggle" class="icon-btn" aria-label="Réglages" data-i18n-aria="ariaSettings">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+      <line x1="4" y1="6" x2="20" y2="6"></line><circle cx="9" cy="6" r="2" fill="currentColor" stroke="none"></circle>
+      <line x1="4" y1="12" x2="20" y2="12"></line><circle cx="15" cy="12" r="2" fill="currentColor" stroke="none"></circle>
+      <line x1="4" y1="18" x2="20" y2="18"></line><circle cx="11" cy="18" r="2" fill="currentColor" stroke="none"></circle>
+    </svg>
   </button>
 </header>
 
@@ -29,61 +35,97 @@
   <section class="stage" aria-live="polite">
     <div class="ring-wrap">
       <div class="ring" id="ring">
-        <span class="phase-label" id="phase-label">Prêt</span>
         <span class="phase-count" id="phase-count"></span>
       </div>
     </div>
     <div class="session-meta">
-      <span id="round-counter">Round 0 / 0</span>
+      <span id="round-counter"></span>
     </div>
     <div class="controls">
-      <button id="start-btn" class="primary-btn">Démarrer</button>
-      <button id="pause-btn" class="secondary-btn" disabled>Pause</button>
-      <button id="reset-btn" class="secondary-btn" disabled>Réinitialiser</button>
+      <button id="start-btn" class="icon-btn" aria-label="Démarrer" data-i18n-aria="ariaStart">
+        <svg class="icon icon-fill" viewBox="0 0 24 24"><polygon points="7,4 20,12 7,20"></polygon></svg>
+      </button>
+      <button id="pause-btn" class="icon-btn" disabled aria-label="Pause">
+        <svg class="icon icon-fill icon-pause-symbol" viewBox="0 0 24 24">
+          <rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect>
+        </svg>
+        <svg class="icon icon-fill icon-resume-symbol" viewBox="0 0 24 24" style="display:none">
+          <polygon points="7,4 20,12 7,20"></polygon>
+        </svg>
+      </button>
+      <button id="reset-btn" class="icon-btn" disabled aria-label="Réinitialiser" data-i18n-aria="ariaReset">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 1 3 6.7"></path><polyline points="3 17 3 21 7 21"></polyline>
+        </svg>
+      </button>
     </div>
   </section>
 
   <section class="panel" id="config-panel" aria-label="Configuration de la session">
-    <h2>Configuration</h2>
+    <h2 data-i18n="sessionConfigTitle">Configuration</h2>
 
     <div class="field-grid">
       <label class="field">
-        <span>Inspiration (s)</span>
+        <span data-i18n="fieldInhale">Inspiration (s)</span>
         <input type="number" id="cfg-inhale" min="0" max="30" value="4">
       </label>
       <label class="field">
-        <span>Rétention haute (s)</span>
+        <span data-i18n="fieldHoldIn">Rétention haute (s)</span>
         <input type="number" id="cfg-hold-in" min="0" max="60" value="4">
       </label>
       <label class="field">
-        <span>Expiration (s)</span>
+        <span data-i18n="fieldExhale">Expiration (s)</span>
         <input type="number" id="cfg-exhale" min="0" max="30" value="4">
       </label>
       <label class="field">
-        <span>Rétention basse (s)</span>
+        <span data-i18n="fieldHoldOut">Rétention basse (s)</span>
         <input type="number" id="cfg-hold-out" min="0" max="60" value="4">
       </label>
       <label class="field">
-        <span>Rounds</span>
+        <span data-i18n="fieldRounds">Rounds</span>
         <input type="number" id="cfg-rounds" min="1" max="99" value="6">
       </label>
-      <label class="field">
-        <span>Musique de fond</span>
-        <select id="cfg-music">
-          <option value="none">Aucune</option>
-        </select>
-      </label>
     </div>
-
-    <p class="hint" id="config-hint">Modifie librement ces valeurs, puis clique sur <strong>Custom</strong> pour les appliquer.</p>
   </section>
-
-  <p class="disclaimer">Ceci n'est pas un avis médical. Arrête l'exercice si tu te sens mal à l'aise, et demande conseil à un professionnel de santé en cas de doute ou de condition particulière.</p>
 
 </main>
 
+<aside id="settings-drawer" class="drawer" aria-hidden="true">
+  <div class="drawer-header">
+    <h2 data-i18n="settingsTitle">Réglages</h2>
+    <button id="drawer-close" class="icon-btn" aria-label="Fermer" data-i18n-aria="ariaClose">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div class="drawer-section">
+    <span class="drawer-label" data-i18n="themeLabel">Thème</span>
+    <div class="segmented" id="theme-switch">
+      <button type="button" class="segmented-btn" data-theme-choice="light" data-i18n="themeLight">Clair</button>
+      <button type="button" class="segmented-btn" data-theme-choice="dark" data-i18n="themeDark">Sombre</button>
+    </div>
+  </div>
+
+  <div class="drawer-section">
+    <span class="drawer-label" data-i18n="languageLabel">Langue</span>
+    <div class="segmented" id="lang-switch">
+      <button type="button" class="segmented-btn" data-lang-choice="fr">FR</button>
+      <button type="button" class="segmented-btn" data-lang-choice="en">EN</button>
+    </div>
+  </div>
+
+  <div class="drawer-section">
+    <label class="drawer-label" for="cfg-music" data-i18n="fieldMusic">Musique de fond</label>
+    <select id="cfg-music"></select>
+  </div>
+</aside>
+<div id="drawer-backdrop" class="drawer-backdrop"></div>
+
 <audio id="bg-audio" loop preload="none"></audio>
 
+<script src="js/i18n.js"></script>
 <script src="js/presets.js"></script>
 <script src="js/app.js"></script>
 </body>

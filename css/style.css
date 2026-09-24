@@ -102,15 +102,6 @@ main{width:100%;max-width:640px;}
   margin:1.5rem 0 .5rem;
   flex-wrap:wrap;
 }
-.preset-btn{
-  background:var(--bg-raised);
-  border:1px solid var(--border);
-  color:var(--text-strong);
-  padding:.5rem 1.1rem;
-  border-radius:999px;
-  font-size:.9rem;
-  cursor:pointer;
-}
 .preset-btn.active{
   background:var(--accent);
   border-color:var(--accent);

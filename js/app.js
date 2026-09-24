@@ -375,14 +375,11 @@
   }
 
   // ---------- wiring ----------
-  function init() {
-    loadSettings();
-    initThemeDefault();
-    updateThemeSwitchUI();
-    updateLangSwitchUI();
-    document.documentElement.lang = currentLang;
-    applyTranslations();
-
+  // Event listeners are wired up FIRST, before anything that could
+  // possibly throw (settings/translation loading). This way, even if a
+  // later step fails, the buttons still respond instead of the whole
+  // page going dead.
+  function wireEvents() {
     el.settingsToggle.addEventListener("click", openDrawer);
     el.drawerClose.addEventListener("click", closeDrawer);
     el.drawerBackdrop.addEventListener("click", closeDrawer);
@@ -414,8 +411,26 @@
     el.startBtn.addEventListener("click", startSession);
     el.pauseBtn.addEventListener("click", pauseSession);
     el.resetBtn.addEventListener("click", resetSession);
+  }
 
-    selectPreset("box");
+  function init() {
+    wireEvents();
+    try {
+      loadSettings();
+      initThemeDefault();
+      updateThemeSwitchUI();
+      updateLangSwitchUI();
+      document.documentElement.lang = currentLang;
+      applyTranslations();
+      selectPreset("box");
+    } catch (err) {
+      console.error("Samay: erreur au démarrage, réglages/traductions non appliqués.", err);
+      // Fall back to a minimal working session so the buttons still work.
+      if (!session) {
+        session = { type: "pattern", ...PRESETS.box };
+        resetSession();
+      }
+    }
   }
 
   document.addEventListener("DOMContentLoaded", init);

@@ -24,6 +24,8 @@
     cfgHoldOut: document.getElementById("cfg-hold-out"),
     cfgRounds: document.getElementById("cfg-rounds"),
     cfgMusic: document.getElementById("cfg-music"),
+    cfgImage: document.getElementById("cfg-image"),
+    presetDescription: document.getElementById("preset-description"),
     audio: document.getElementById("bg-audio"),
   };
 
@@ -38,6 +40,7 @@
 
   let currentLang = "fr";
   let pendingMusicValue = null;
+  let pendingImageValue = null;
 
   let session = null;
   let activePreset = "box";
@@ -60,6 +63,7 @@
       if (saved.theme) document.documentElement.setAttribute("data-theme", saved.theme);
       if (saved.lang) currentLang = saved.lang;
       if (saved.music) pendingMusicValue = saved.music;
+      if (saved.bgImage) pendingImageValue = saved.bgImage;
       if (saved.custom) {
         el.cfgInhale.value = saved.custom.inhale;
         el.cfgHoldIn.value = saved.custom.hold_in;
@@ -75,6 +79,7 @@
       theme: document.documentElement.getAttribute("data-theme") || "light",
       lang: currentLang,
       music: el.cfgMusic.value,
+      bgImage: el.cfgImage.value,
       custom: readConfigForm(),
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -122,6 +127,8 @@
       node.setAttribute("aria-label", t(node.getAttribute("data-i18n-aria")));
     });
     populateMusicOptions();
+    populateImageOptions();
+    updatePresetDescription();
     refreshDynamicTexts();
   }
 
@@ -158,6 +165,33 @@
     }
   }
 
+  // ---------- background image ----------
+  function populateImageOptions() {
+    const prevValue = el.cfgImage.value || pendingImageValue;
+    el.cfgImage.innerHTML = "";
+    const noneOpt = document.createElement("option");
+    noneOpt.value = "none";
+    noneOpt.textContent = t("imageNone");
+    el.cfgImage.appendChild(noneOpt);
+    for (const img of IMAGE_TRACKS) {
+      const opt = document.createElement("option");
+      opt.value = img.id;
+      opt.textContent = I18N[currentLang].imageTracks[img.id];
+      el.cfgImage.appendChild(opt);
+    }
+    if (prevValue && [...el.cfgImage.options].some((o) => o.value === prevValue)) {
+      el.cfgImage.value = prevValue;
+      pendingImageValue = null;
+    }
+    applyImageSelection();
+  }
+
+  function applyImageSelection() {
+    const id = el.cfgImage.value;
+    const img = IMAGE_TRACKS.find((im) => im.id === id);
+    document.body.style.backgroundImage = img ? `url("${img.src}")` : "none";
+  }
+
   // ---------- settings drawer ----------
   function openDrawer() {
     el.drawer.classList.add("open");
@@ -189,11 +223,6 @@
     el.cfgRounds.value = preset.rounds;
   }
 
-  function setFieldsEnabled(enabled) {
-    patternFields.forEach((f) => (f.disabled = !enabled));
-    el.configPanel.classList.toggle("panel-readonly", !enabled);
-  }
-
   function clamp(v, min, max) {
     const n = Math.round(Number(v));
     if (Number.isNaN(n)) return min;
@@ -207,17 +236,19 @@
 
     if (name === "custom") {
       session = { type: "pattern", ...readConfigForm() };
-      setFieldsEnabled(true);
+      el.configPanel.classList.remove("hidden");
     } else {
       session = { ...PRESETS[name] };
-      if (session.type === "pattern") {
-        writeConfigForm(session);
-        setFieldsEnabled(true);
-      } else {
-        setFieldsEnabled(false);
-      }
+      if (session.type === "pattern") writeConfigForm(session);
+      el.configPanel.classList.add("hidden");
     }
+    updatePresetDescription();
     resetSession();
+  }
+
+  function updatePresetDescription() {
+    const key = "desc" + activePreset.charAt(0).toUpperCase() + activePreset.slice(1);
+    el.presetDescription.textContent = I18N[currentLang][key] || "";
   }
 
   // ---------- phase sequence builders ----------
@@ -264,7 +295,6 @@
 
     el.ring.className = "ring " + phase.cssClass;
     el.ring.style.transitionDuration = `${phase.transition}s`;
-    el.phaseCount.textContent = remaining;
     updateRoundCounter(phase);
   }
 
@@ -308,7 +338,6 @@
     tickHandle = setTimeout(() => {
       remaining -= 1;
       if (remaining > 0) {
-        el.phaseCount.textContent = remaining;
         tick();
         return;
       }
@@ -330,6 +359,8 @@
     tick();
   }
 
+  const FINISHED_ICON = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="8 12 11 15 16 9"></polyline></svg>';
+
   function finishSession() {
     running = false;
     paused = false;
@@ -337,7 +368,7 @@
     el.audio.pause();
     el.ring.className = "ring";
     el.ring.style.transitionDuration = "1s";
-    el.phaseCount.textContent = t("finished");
+    el.phaseCount.innerHTML = FINISHED_ICON;
     el.startBtn.disabled = false;
     el.pauseBtn.disabled = true;
     el.resetBtn.disabled = true;
@@ -366,7 +397,7 @@
     round = 1;
     el.ring.className = "ring";
     el.ring.style.transitionDuration = "1s";
-    el.phaseCount.textContent = "";
+    el.phaseCount.innerHTML = "";
     el.roundCounter.textContent = `${I18N[currentLang].roundWord} 0 / ${session.rounds}`;
     el.startBtn.disabled = false;
     el.pauseBtn.disabled = true;
@@ -395,6 +426,10 @@
     });
     el.cfgMusic.addEventListener("change", () => {
       applyMusicSelection();
+      saveSettings();
+    });
+    el.cfgImage.addEventListener("change", () => {
+      applyImageSelection();
       saveSettings();
     });
 

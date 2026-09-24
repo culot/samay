@@ -45,3 +45,12 @@ const MUSIC_TRACKS = [
   { id: "ocean", src: "audio/ocean.mp3" },
   { id: "cosmos", src: "audio/cosmos.mp3" },
 ];
+
+// Background images. Drop your own royalty-free images into /images using
+// these exact filenames (see images/README.md), or edit this list. Labels
+// live in js/i18n.js (I18N.<lang>.imageTracks).
+const IMAGE_TRACKS = [
+  { id: "rain", src: "images/rain.jpg" },
+  { id: "ocean", src: "images/ocean.jpg" },
+  { id: "cosmos", src: "images/cosmos.jpg" },
+];

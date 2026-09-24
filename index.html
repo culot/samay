@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Samay</title>
 <meta name="description" content="Samay — exercices de respiration guidés.">
-<link rel="stylesheet" href="css/style.css?v=3">
+<link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
 
@@ -52,6 +52,8 @@
     </button>
   </section>
 
+  <p class="preset-description" id="preset-description"></p>
+
   <section class="stage" aria-live="polite">
     <div class="ring-wrap">
       <div class="ring" id="ring">
@@ -81,7 +83,7 @@
     </div>
   </section>
 
-  <section class="panel" id="config-panel" aria-label="Configuration de la session">
+  <section class="panel hidden" id="config-panel" aria-label="Configuration de la session">
     <h2 data-i18n="sessionConfigTitle">Configuration</h2>
 
     <div class="field-grid">
@@ -140,13 +142,18 @@
     <label class="drawer-label" for="cfg-music" data-i18n="fieldMusic">Musique de fond</label>
     <select id="cfg-music"></select>
   </div>
+
+  <div class="drawer-section">
+    <label class="drawer-label" for="cfg-image" data-i18n="fieldImage">Image de fond</label>
+    <select id="cfg-image"></select>
+  </div>
 </aside>
 <div id="drawer-backdrop" class="drawer-backdrop"></div>
 
 <audio id="bg-audio" loop preload="none"></audio>
 
-<script src="js/i18n.js?v=3"></script>
-<script src="js/presets.js?v=3"></script>
-<script src="js/app.js?v=3"></script>
+<script src="js/i18n.js?v=4"></script>
+<script src="js/presets.js?v=4"></script>
+<script src="js/app.js?v=4"></script>
 </body>
 </html>

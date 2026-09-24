@@ -108,6 +108,16 @@ main{width:100%;max-width:640px;}
   color:var(--base3);
 }
 
+.preset-description{
+  max-width:46ch;
+  margin:0 auto;
+  text-align:center;
+  font-size:.82rem;
+  line-height:1.5;
+  color:var(--text);
+  min-height:1.2em;
+}
+
 /* ---------- stage / ring ---------- */
 .stage{
   display:flex;
@@ -146,7 +156,11 @@ main{width:100%;max-width:640px;}
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   font-size:2.2rem;
   color:var(--text-strong);
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
+.phase-count .icon{width:2.6rem;height:2.6rem;color:var(--accent);}
 
 .session-meta{
   margin-top:1.2rem;
@@ -199,6 +213,15 @@ main{width:100%;max-width:640px;}
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
 .panel-readonly .field input{opacity:.45;}
+.hidden{display:none !important;}
+
+/* ---------- background image ---------- */
+body{
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  background-repeat:no-repeat;
+}
 
 /* ---------- settings drawer ---------- */
 .drawer-backdrop{

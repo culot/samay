@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Samay</title>
 <meta name="description" content="Samay — exercices de respiration guidés.">
-<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 
@@ -147,13 +147,29 @@
     <label class="drawer-label" for="cfg-image" data-i18n="fieldImage">Image de fond</label>
     <select id="cfg-image"></select>
   </div>
+
+  <div class="drawer-section">
+    <span class="drawer-label" data-i18n="roundInfoLabel">Indications sous le rond</span>
+    <div class="segmented" id="round-info-switch">
+      <button type="button" class="segmented-btn" data-choice="show" data-i18n="show">Afficher</button>
+      <button type="button" class="segmented-btn" data-choice="hide" data-i18n="hide">Masquer</button>
+    </div>
+  </div>
+
+  <div class="drawer-section">
+    <span class="drawer-label" data-i18n="phaseHintsLabel">Indications dans le rond</span>
+    <div class="segmented" id="phase-hints-switch">
+      <button type="button" class="segmented-btn" data-choice="show" data-i18n="show">Afficher</button>
+      <button type="button" class="segmented-btn" data-choice="hide" data-i18n="hide">Masquer</button>
+    </div>
+  </div>
 </aside>
 <div id="drawer-backdrop" class="drawer-backdrop"></div>
 
 <audio id="bg-audio" loop preload="none"></audio>
 
-<script src="js/i18n.js?v=4"></script>
-<script src="js/presets.js?v=4"></script>
-<script src="js/app.js?v=4"></script>
+<script src="js/i18n.js?v=5"></script>
+<script src="js/presets.js?v=5"></script>
+<script src="js/app.js?v=5"></script>
 </body>
 </html>

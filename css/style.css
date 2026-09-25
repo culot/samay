@@ -13,6 +13,8 @@
   --accent-2:var(--blue);
   --border:rgba(88,110,117,0.25);
   --ring-idle:var(--base1);
+  --bg-overlay:rgba(253,246,227,0.72);
+  --bg-photo:none;
 }
 
 [data-theme="dark"]{
@@ -24,13 +26,14 @@
   --accent-2:var(--blue);
   --border:rgba(131,148,150,0.25);
   --ring-idle:var(--base01);
+  --bg-overlay:rgba(0,43,54,0.72);
 }
 
 *{box-sizing:border-box;}
 
 html,body{
   margin:0;
-  min-height:100%;
+  min-height:100vh;
   background:var(--bg);
   color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
@@ -71,6 +74,8 @@ body{
   color:var(--text);
   max-width:34ch;
   font-style:italic;
+  text-align:justify;
+  text-justify:inter-word;
 }
 
 .icon-btn{
@@ -111,7 +116,8 @@ main{width:100%;max-width:640px;}
 .preset-description{
   max-width:46ch;
   margin:0 auto;
-  text-align:center;
+  text-align:justify;
+  text-justify:inter-word;
   font-size:.82rem;
   line-height:1.5;
   color:var(--text);
@@ -154,13 +160,11 @@ main{width:100%;max-width:640px;}
 
 .phase-count{
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  font-size:2.2rem;
+  font-size:1.3rem;
   color:var(--text-strong);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  letter-spacing:.03em;
 }
-.phase-count .icon{width:2.6rem;height:2.6rem;color:var(--accent);}
+.phase-count.is-finished{font-size:2.2rem;}
 
 .session-meta{
   margin-top:1.2rem;
@@ -217,6 +221,7 @@ main{width:100%;max-width:640px;}
 
 /* ---------- background image ---------- */
 body{
+  background-image:linear-gradient(var(--bg-overlay),var(--bg-overlay)),var(--bg-photo);
   background-size:cover;
   background-position:center;
   background-attachment:fixed;

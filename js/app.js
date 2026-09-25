@@ -16,6 +16,9 @@
     drawerClose: document.getElementById("drawer-close"),
     themeSwitchBtns: [...document.querySelectorAll("#theme-switch .segmented-btn")],
     langSwitchBtns: [...document.querySelectorAll("#lang-switch .segmented-btn")],
+    roundInfoSwitchBtns: [...document.querySelectorAll("#round-info-switch .segmented-btn")],
+    phaseHintsSwitchBtns: [...document.querySelectorAll("#phase-hints-switch .segmented-btn")],
+    sessionMeta: document.querySelector(".session-meta"),
     presetBtns: [...document.querySelectorAll(".preset-btn")],
     configPanel: document.getElementById("config-panel"),
     cfgInhale: document.getElementById("cfg-inhale"),
@@ -32,11 +35,14 @@
   const patternFields = [el.cfgInhale, el.cfgHoldIn, el.cfgExhale, el.cfgHoldOut, el.cfgRounds];
 
   const PATTERN_PHASES = [
-    { key: "inhale", cssClass: "phase-inhale" },
-    { key: "hold_in", cssClass: "phase-hold-in" },
-    { key: "exhale", cssClass: "phase-exhale" },
-    { key: "hold_out", cssClass: "phase-hold-out" },
+    { key: "inhale", cssClass: "phase-inhale", hintKey: "hintInhale" },
+    { key: "hold_in", cssClass: "phase-hold-in", hintKey: "hintHold" },
+    { key: "exhale", cssClass: "phase-exhale", hintKey: "hintExhale" },
+    { key: "hold_out", cssClass: "phase-hold-out", hintKey: "hintHold" },
   ];
+
+  let showRoundInfo = true;
+  let showPhaseHints = false;
 
   let currentLang = "fr";
   let pendingMusicValue = null;
@@ -64,6 +70,8 @@
       if (saved.lang) currentLang = saved.lang;
       if (saved.music) pendingMusicValue = saved.music;
       if (saved.bgImage) pendingImageValue = saved.bgImage;
+      if (typeof saved.showRoundInfo === "boolean") showRoundInfo = saved.showRoundInfo;
+      if (typeof saved.showPhaseHints === "boolean") showPhaseHints = saved.showPhaseHints;
       if (saved.custom) {
         el.cfgInhale.value = saved.custom.inhale;
         el.cfgHoldIn.value = saved.custom.hold_in;
@@ -80,6 +88,8 @@
       lang: currentLang,
       music: el.cfgMusic.value,
       bgImage: el.cfgImage.value,
+      showRoundInfo: showRoundInfo,
+      showPhaseHints: showPhaseHints,
       custom: readConfigForm(),
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -115,6 +125,27 @@
 
   function updateLangSwitchUI() {
     el.langSwitchBtns.forEach((b) => b.classList.toggle("active", b.dataset.langChoice === currentLang));
+  }
+
+  // ---------- display toggles ----------
+  function setRoundInfo(value) {
+    showRoundInfo = value;
+    updateRoundInfoSwitchUI();
+    el.sessionMeta.classList.toggle("hidden", !showRoundInfo);
+    saveSettings();
+  }
+  function updateRoundInfoSwitchUI() {
+    el.roundInfoSwitchBtns.forEach((b) => b.classList.toggle("active", (b.dataset.choice === "show") === showRoundInfo));
+  }
+
+  function setPhaseHints(value) {
+    showPhaseHints = value;
+    updatePhaseHintsSwitchUI();
+    refreshDynamicTexts();
+    saveSettings();
+  }
+  function updatePhaseHintsSwitchUI() {
+    el.phaseHintsSwitchBtns.forEach((b) => b.classList.toggle("active", (b.dataset.choice === "show") === showPhaseHints));
   }
 
   function applyTranslations() {
@@ -189,7 +220,7 @@
   function applyImageSelection() {
     const id = el.cfgImage.value;
     const img = IMAGE_TRACKS.find((im) => im.id === id);
-    document.body.style.backgroundImage = img ? `url("${img.src}")` : "none";
+    document.body.style.setProperty("--bg-photo", img ? `url("${img.src}")` : "none");
   }
 
   // ---------- settings drawer ----------
@@ -295,6 +326,8 @@
 
     el.ring.className = "ring " + phase.cssClass;
     el.ring.style.transitionDuration = `${phase.transition}s`;
+    el.phaseCount.classList.remove("is-finished");
+    el.phaseCount.textContent = showPhaseHints ? t(phase.hintKey) : "";
     updateRoundCounter(phase);
   }
 
@@ -319,6 +352,8 @@
     if (!session) return;
     if (running) {
       updateRoundCounter(phaseSequence[phaseIndex]);
+      const phase = phaseSequence[phaseIndex];
+      el.phaseCount.textContent = showPhaseHints ? t(phase.hintKey) : "";
     } else {
       el.roundCounter.textContent = `${I18N[currentLang].roundWord} 0 / ${session.rounds}`;
     }
@@ -359,8 +394,6 @@
     tick();
   }
 
-  const FINISHED_ICON = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="8 12 11 15 16 9"></polyline></svg>';
-
   function finishSession() {
     running = false;
     paused = false;
@@ -368,7 +401,8 @@
     el.audio.pause();
     el.ring.className = "ring";
     el.ring.style.transitionDuration = "1s";
-    el.phaseCount.innerHTML = FINISHED_ICON;
+    el.phaseCount.classList.add("is-finished");
+    el.phaseCount.textContent = t("finished");
     el.startBtn.disabled = false;
     el.pauseBtn.disabled = true;
     el.resetBtn.disabled = true;
@@ -397,7 +431,8 @@
     round = 1;
     el.ring.className = "ring";
     el.ring.style.transitionDuration = "1s";
-    el.phaseCount.innerHTML = "";
+    el.phaseCount.classList.remove("is-finished");
+    el.phaseCount.textContent = "";
     el.roundCounter.textContent = `${I18N[currentLang].roundWord} 0 / ${session.rounds}`;
     el.startBtn.disabled = false;
     el.pauseBtn.disabled = true;
@@ -423,6 +458,12 @@
     });
     el.langSwitchBtns.forEach((btn) => {
       btn.addEventListener("click", () => setLang(btn.dataset.langChoice));
+    });
+    el.roundInfoSwitchBtns.forEach((btn) => {
+      btn.addEventListener("click", () => setRoundInfo(btn.dataset.choice === "show"));
+    });
+    el.phaseHintsSwitchBtns.forEach((btn) => {
+      btn.addEventListener("click", () => setPhaseHints(btn.dataset.choice === "show"));
     });
     el.cfgMusic.addEventListener("change", () => {
       applyMusicSelection();
@@ -455,6 +496,9 @@
       initThemeDefault();
       updateThemeSwitchUI();
       updateLangSwitchUI();
+      updateRoundInfoSwitchUI();
+      updatePhaseHintsSwitchUI();
+      el.sessionMeta.classList.toggle("hidden", !showRoundInfo);
       document.documentElement.lang = currentLang;
       applyTranslations();
       selectPreset("box");

@@ -19,6 +19,7 @@
     roundInfoSwitchBtns: [...document.querySelectorAll("#round-info-switch .segmented-btn")],
     phaseHintsSwitchBtns: [...document.querySelectorAll("#phase-hints-switch .segmented-btn")],
     sessionMeta: document.querySelector(".session-meta"),
+    bgImageLayer: document.getElementById("bg-image-layer"),
     presetBtns: [...document.querySelectorAll(".preset-btn")],
     configPanel: document.getElementById("config-panel"),
     cfgInhale: document.getElementById("cfg-inhale"),
@@ -220,7 +221,7 @@
   function applyImageSelection() {
     const id = el.cfgImage.value;
     const img = IMAGE_TRACKS.find((im) => im.id === id);
-    document.body.style.setProperty("--bg-photo", img ? `url("${img.src}")` : "none");
+    el.bgImageLayer.style.backgroundImage = img ? `url("${img.src}")` : "none";
   }
 
   // ---------- settings drawer ----------
@@ -287,16 +288,16 @@
     if (s.type === "wimhof") {
       const seq = [];
       for (let i = 0; i < s.breaths; i++) {
-        seq.push({ cssClass: "phase-inhale", duration: s.breath_inhale, transition: s.breath_inhale, breath: true });
-        seq.push({ cssClass: "phase-exhale", duration: s.breath_exhale, transition: s.breath_exhale, breath: true });
+        seq.push({ cssClass: "phase-inhale", duration: s.breath_inhale, transition: s.breath_inhale, breath: true, hintKey: "hintInhale" });
+        seq.push({ cssClass: "phase-exhale", duration: s.breath_exhale, transition: s.breath_exhale, breath: true, hintKey: "hintExhale" });
       }
-      seq.push({ cssClass: "phase-hold-out", duration: s.hold, transition: Math.min(1.5, s.hold) });
-      seq.push({ cssClass: "phase-hold-in", duration: s.recovery_hold, transition: Math.min(2, s.recovery_hold) });
+      seq.push({ cssClass: "phase-hold-out", duration: s.hold, transition: Math.min(1.5, s.hold), hintKey: "hintHold" });
+      seq.push({ cssClass: "phase-hold-in", duration: s.recovery_hold, transition: Math.min(2, s.recovery_hold), hintKey: "hintRecover" });
       return seq;
     }
     return PATTERN_PHASES
       .filter((p) => s[p.key] > 0)
-      .map((p) => ({ cssClass: p.cssClass, duration: s[p.key], transition: s[p.key] }));
+      .map((p) => ({ cssClass: p.cssClass, duration: s[p.key], transition: s[p.key], hintKey: p.hintKey }));
   }
 
   // ---------- breathing engine ----------

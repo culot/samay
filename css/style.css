@@ -33,10 +33,10 @@
 html,body{
   margin:0;
   min-height:100vh;
-  background:var(--bg);
+  background-color:var(--bg);
   color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-  transition:background .3s ease,color .3s ease;
+  transition:background-color .3s ease,color .3s ease;
 }
 
 body{
@@ -219,22 +219,12 @@ main{width:100%;max-width:640px;}
 .hidden{display:none !important;}
 
 /* ---------- background image ---------- */
-.bg-image-layer{
-  position:fixed;
-  inset:0;
+body{
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
   background-repeat:no-repeat;
-  z-index:-2;
-}
-.bg-tint-layer{
-  position:fixed;
-  inset:0;
-  background:var(--tint);
-  z-index:-1;
-  pointer-events:none;
-  transition:background .3s ease;
+  box-shadow:inset 0 0 0 2000px var(--tint);
 }
 
 /* ---------- settings drawer ---------- */

@@ -13,6 +13,7 @@
   --accent-2:var(--blue);
   --border:rgba(88,110,117,0.25);
   --ring-idle:var(--base1);
+  --tint:rgba(253,246,227,0.4);
 }
 
 [data-theme="dark"]{
@@ -24,6 +25,7 @@
   --accent-2:var(--blue);
   --border:rgba(131,148,150,0.25);
   --ring-idle:var(--base01);
+  --tint:rgba(0,43,54,0.45);
 }
 
 *{box-sizing:border-box;}
@@ -229,8 +231,7 @@ main{width:100%;max-width:640px;}
 .bg-tint-layer{
   position:fixed;
   inset:0;
-  background:var(--bg);
-  opacity:.74;
+  background:var(--tint);
   z-index:-1;
   pointer-events:none;
   transition:background .3s ease;
@@ -291,6 +292,17 @@ main{width:100%;max-width:640px;}
   font-size:.85rem;
 }
 .segmented-btn.active{background:var(--accent);color:var(--base3);}
+
+.segmented.flags{border:none;gap:.5rem;background:transparent;}
+.segmented.flags .segmented-btn{
+  flex:none;
+  padding:2px;
+  border:2px solid transparent;
+  border-radius:4px;
+  background:transparent;
+}
+.segmented.flags .segmented-btn.active{background:transparent;border-color:var(--accent);}
+.flag{width:2rem;height:1.5rem;display:block;border-radius:2px;}
 
 .drawer select{
   background:var(--bg);

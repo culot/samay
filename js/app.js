@@ -42,7 +42,7 @@
   ];
 
   let showRoundInfo = true;
-  let showPhaseHints = false;
+  let showPhaseHints = true;
 
   let currentLang = "fr";
   let pendingMusicValue = null;
@@ -221,6 +221,7 @@
     const id = el.cfgImage.value;
     const img = IMAGE_TRACKS.find((im) => im.id === id);
     document.body.style.backgroundImage = img ? `url("${img.src}")` : "";
+    document.body.classList.toggle("has-bg-image", !!img);
   }
 
   // ---------- settings drawer ----------

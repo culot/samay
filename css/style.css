@@ -243,6 +243,28 @@ body.has-bg-image .session-meta{
 body.has-bg-image .subtitle,
 body.has-bg-image .preset-description{font-weight:500;}
 
+/* Round icon buttons over a background image: black border with a thin
+   white edge, white icons with a dark outline. The drawer keeps its own
+   look (restored below). */
+body.has-bg-image .icon-btn:not(.active):not(#start-btn){
+  background:rgba(0,0,0,.3);
+}
+body.has-bg-image .icon-btn{
+  color:#fff;
+  border:2px solid #000;
+  box-shadow:0 0 0 1px rgba(255,255,255,.65);
+}
+body.has-bg-image .icon-btn .icon{
+  filter:drop-shadow(0 0 1px #000) drop-shadow(0 0 1px #000);
+}
+body.has-bg-image .drawer .icon-btn{
+  color:var(--text-strong);
+  border:1px solid var(--border);
+  box-shadow:none;
+  background:none;
+}
+body.has-bg-image .drawer .icon-btn .icon{filter:none;}
+
 /* ---------- settings drawer ---------- */
 .drawer-backdrop{
   position:fixed;inset:0;

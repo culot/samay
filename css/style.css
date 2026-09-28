@@ -292,7 +292,7 @@ body{
   background:transparent;
 }
 .segmented.flags .segmented-btn.active{background:transparent;border-color:var(--accent);}
-.flag{width:2rem;height:1.5rem;display:block;border-radius:2px;}
+.flag{width:2.7rem;height:1.5rem;display:block;border-radius:2px;}
 
 .drawer select{
   background:var(--bg);

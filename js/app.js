@@ -19,7 +19,6 @@
     roundInfoSwitchBtns: [...document.querySelectorAll("#round-info-switch .segmented-btn")],
     phaseHintsSwitchBtns: [...document.querySelectorAll("#phase-hints-switch .segmented-btn")],
     sessionMeta: document.querySelector(".session-meta"),
-    bgImageLayer: document.getElementById("bg-image-layer"),
     presetBtns: [...document.querySelectorAll(".preset-btn")],
     configPanel: document.getElementById("config-panel"),
     cfgInhale: document.getElementById("cfg-inhale"),
@@ -221,7 +220,7 @@
   function applyImageSelection() {
     const id = el.cfgImage.value;
     const img = IMAGE_TRACKS.find((im) => im.id === id);
-    el.bgImageLayer.style.backgroundImage = img ? `url("${img.src}")` : "none";
+    document.body.style.backgroundImage = img ? `url("${img.src}")` : "";
   }
 
   // ---------- settings drawer ----------

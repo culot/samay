@@ -13,7 +13,7 @@
   --accent-2:var(--blue);
   --border:rgba(88,110,117,0.25);
   --ring-idle:var(--base1);
-  --tint:rgba(253,246,227,0.4);
+  --tint:rgba(253,246,227,0.1);
 }
 
 [data-theme="dark"]{
@@ -25,7 +25,7 @@
   --accent-2:var(--blue);
   --border:rgba(131,148,150,0.25);
   --ring-idle:var(--base01);
-  --tint:rgba(0,43,54,0.45);
+  --tint:rgba(0,43,54,0.1);
 }
 
 *{box-sizing:border-box;}
@@ -226,6 +226,22 @@ body{
   background-repeat:no-repeat;
   box-shadow:inset 0 0 0 2000px var(--tint);
 }
+
+/* Texts sitting directly on the background image: white letters with a
+   black outline, readable on any picture. Only active when an image is
+   selected (otherwise white text would vanish on the plain theme). */
+body.has-bg-image .logo,
+body.has-bg-image .subtitle,
+body.has-bg-image .preset-description,
+body.has-bg-image .session-meta{
+  color:#fff;
+  text-shadow:
+    -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,
+    0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000, 1px 0 0 #000,
+    0 0 5px rgba(0,0,0,.7);
+}
+body.has-bg-image .subtitle,
+body.has-bg-image .preset-description{font-weight:500;}
 
 /* ---------- settings drawer ---------- */
 .drawer-backdrop{
